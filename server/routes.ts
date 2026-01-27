@@ -226,6 +226,41 @@ export async function registerRoutes(
     res.json(data);
   });
 
+  // POST /api/redirect-check (bulk redirect checking)
+  app.post('/api/redirect-check', async (req, res) => {
+    try {
+      const { urls } = req.body;
+      
+      if (!Array.isArray(urls) || urls.length === 0) {
+        return res.status(400).json({ message: "Please provide an array of URLs" });
+      }
+
+      if (urls.length > 50) {
+        return res.status(400).json({ message: "Maximum 50 URLs allowed per request" });
+      }
+
+      const results = await Promise.all(
+        urls.map(async (url: string) => {
+          try {
+            let cleanUrl = url.trim();
+            if (!cleanUrl.startsWith('http')) {
+              cleanUrl = 'https://' + cleanUrl;
+            }
+            const hops = await checkRedirects(cleanUrl);
+            return { url: cleanUrl, hops };
+          } catch (err: any) {
+            return { url, hops: [], error: err.message };
+          }
+        })
+      );
+
+      res.json(results);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   // POST /api/scan
   app.post(api.domains.scan.path, async (req, res) => {
     try {
