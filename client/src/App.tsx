@@ -7,12 +7,14 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import DomainReport from "@/pages/DomainReport";
 import RedirectChecker from "@/pages/RedirectChecker";
+import SecurityHeaderChecker from "@/pages/SecurityHeaderChecker";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/redirect-checker" component={RedirectChecker} />
+      <Route path="/security-checker" component={SecurityHeaderChecker} />
       {/* Route for handling /google.com pattern */}
       <Route path="/:domain" component={DomainReport} />
       <Route component={NotFound} />

@@ -258,6 +258,28 @@ export async function registerRoutes(
     }
   });
 
+  // POST /api/security-check (standalone security header checking)
+  app.post('/api/security-check', async (req, res) => {
+    try {
+      const { url } = req.body;
+      
+      if (!url || typeof url !== 'string') {
+        return res.status(400).json({ message: "Please provide a URL" });
+      }
+
+      let cleanUrl = url.trim();
+      if (!cleanUrl.startsWith('http')) {
+        cleanUrl = 'https://' + cleanUrl;
+      }
+
+      const headers = await checkSecurityHeaders(cleanUrl);
+      res.json({ url: cleanUrl, headers });
+    } catch (err: any) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to check security headers", error: err.message });
+    }
+  });
+
   // POST /api/scan
   app.post(api.domains.scan.path, async (req, res) => {
     try {

@@ -8,7 +8,7 @@ export function Navbar() {
   const navItems = [
     { label: "Dashboard", href: "/", icon: BarChart3 },
     { label: "Redirect Checker", href: "/redirect-checker", icon: Zap },
-    { label: "Security", href: "/#security", icon: Shield },
+    { label: "Security Checker", href: "/security-checker", icon: Shield },
   ];
 
   return (
