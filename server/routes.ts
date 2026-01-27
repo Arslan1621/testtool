@@ -280,6 +280,28 @@ export async function registerRoutes(
     }
   });
 
+  // POST /api/robots-check (standalone robots.txt validation)
+  app.post('/api/robots-check', async (req, res) => {
+    try {
+      const { url } = req.body;
+      
+      if (!url || typeof url !== 'string') {
+        return res.status(400).json({ message: "Please provide a URL" });
+      }
+
+      let cleanUrl = url.trim();
+      if (!cleanUrl.startsWith('http')) {
+        cleanUrl = 'https://' + cleanUrl;
+      }
+
+      const result = await checkRobots(cleanUrl);
+      res.json({ url: cleanUrl, ...result });
+    } catch (err: any) {
+      console.error(err);
+      res.status(500).json({ message: "Failed to check robots.txt", error: err.message });
+    }
+  });
+
   // POST /api/scan
   app.post(api.domains.scan.path, async (req, res) => {
     try {

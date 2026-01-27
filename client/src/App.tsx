@@ -8,6 +8,7 @@ import Home from "@/pages/Home";
 import DomainReport from "@/pages/DomainReport";
 import RedirectChecker from "@/pages/RedirectChecker";
 import SecurityHeaderChecker from "@/pages/SecurityHeaderChecker";
+import RobotsTxtTool from "@/pages/RobotsTxtTool";
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/redirect-checker" component={RedirectChecker} />
       <Route path="/security-checker" component={SecurityHeaderChecker} />
+      <Route path="/robots-txt" component={RobotsTxtTool} />
       {/* Route for handling /google.com pattern */}
       <Route path="/:domain" component={DomainReport} />
       <Route component={NotFound} />

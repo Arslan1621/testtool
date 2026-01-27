@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { BarChart3, Search, Shield, Zap } from "lucide-react";
+import { BarChart3, Search, Shield, Zap, FileCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -9,6 +9,7 @@ export function Navbar() {
     { label: "Dashboard", href: "/", icon: BarChart3 },
     { label: "Redirect Checker", href: "/redirect-checker", icon: Zap },
     { label: "Security Checker", href: "/security-checker", icon: Shield },
+    { label: "Robots.txt", href: "/robots-txt", icon: FileCode },
   ];
 
   return (
