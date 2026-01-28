@@ -16,7 +16,7 @@ import About from "@/pages/About";
 import Blog from "@/pages/Blog";
 import Contact from "@/pages/Contact";
 import { SignInPage, SignUpPage } from "@/pages/Auth";
-import Navbar from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

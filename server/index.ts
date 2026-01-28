@@ -6,6 +6,11 @@ import { storage } from "./storage";
 import path from "path";
 import fs from "fs";
 
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const httpServer = createServer(app);
 
@@ -48,7 +53,7 @@ async function injectSEOTags(req: Request, res: Response, next: NextFunction) {
 
     const indexPath = process.env.NODE_ENV === "production" 
       ? path.resolve(__dirname, "public", "index.html")
-      : path.resolve(__dirname, "..", "client", "index.html");
+      : path.resolve(__dirname, "client", "index.html");
 
     if (!fs.existsSync(indexPath)) {
       return next();
