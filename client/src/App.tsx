@@ -11,6 +11,9 @@ import SecurityHeaderChecker from "@/pages/SecurityHeaderChecker";
 import RobotsTxtTool from "@/pages/RobotsTxtTool";
 import BrokenLinkChecker from "@/pages/BrokenLinkChecker";
 import WhoisChecker from "@/pages/WhoisChecker";
+import About from "@/pages/About";
+import Blog from "@/pages/Blog";
+import Contact from "@/pages/Contact";
 
 function Router() {
   return (
@@ -21,6 +24,9 @@ function Router() {
       <Route path="/robots-txt" component={RobotsTxtTool} />
       <Route path="/broken-links" component={BrokenLinkChecker} />
       <Route path="/whois-checker" component={WhoisChecker} />
+      <Route path="/about" component={About} />
+      <Route path="/blog" component={Blog} />
+      <Route path="/contact" component={Contact} />
       {/* Route for handling /google.com pattern */}
       <Route path="/:domain" component={DomainReport} />
       <Route component={NotFound} />

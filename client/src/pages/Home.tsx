@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Globe, Link as LinkIcon, Lock, Search, FileText, Activity } from "lucide-react";
+import { ArrowRight, Globe, Link as LinkIcon, Lock, Search, FileText, Activity, Zap, Shield, FileCode, Unplug } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
@@ -147,29 +147,39 @@ export default function Home() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <ToolFeatureCard 
-            icon={<Search className="w-6 h-6 text-blue-500" />}
+            icon={<Zap className="w-6 h-6 text-amber-500" />}
             title="Redirect Checker"
             description="Visualize redirect chains and catch loops before they hurt SEO."
+            href="/redirect-checker"
           />
           <ToolFeatureCard 
-            icon={<LinkIcon className="w-6 h-6 text-emerald-500" />}
+            icon={<Unplug className="w-6 h-6 text-emerald-500" />}
             title="Broken Link Finder"
             description="Scan pages for 404 errors and broken anchors instantly."
+            href="/broken-links"
           />
           <ToolFeatureCard 
-            icon={<Lock className="w-6 h-6 text-purple-500" />}
+            icon={<Shield className="w-6 h-6 text-purple-500" />}
             title="Security Audit"
             description="Verify SSL, HSTS, CSP and other critical security headers."
+            href="/security-checker"
           />
           <ToolFeatureCard 
-            icon={<FileText className="w-6 h-6 text-amber-500" />}
+            icon={<FileCode className="w-6 h-6 text-blue-500" />}
             title="Robots.txt Validator"
             description="Ensure your robots.txt file is valid and discoverable."
+            href="/robots-txt"
           />
           <ToolFeatureCard 
-            icon={<Globe className="w-6 h-6 text-indigo-400" />}
+            icon={<Globe className="w-6 h-6 text-indigo-500" />}
+            title="WHOIS Lookup"
+            description="Look up domain registration details, owner info, and name servers."
+            href="/whois-checker"
+          />
+          <ToolFeatureCard 
+            icon={<Search className="w-6 h-6 text-rose-500" />}
             title="AI Summary & SEO"
             description="Get an AI-generated summary, services list, and SEO recommendations."
           />
@@ -217,16 +227,26 @@ export default function Home() {
   );
 }
 
-function ToolFeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
-  return (
-    <div className="bg-card rounded-xl p-6 shadow-lg border border-border hover:shadow-xl transition-all duration-300">
-      <div className="h-12 w-12 rounded-lg bg-background border border-border flex items-center justify-center mb-4 shadow-sm">
+function ToolFeatureCard({ icon, title, description, href }: { icon: React.ReactNode, title: string, description: string, href?: string }) {
+  const content = (
+    <div className="bg-card rounded-xl p-6 shadow-lg border border-border hover:shadow-xl hover:border-primary/50 transition-all duration-300 h-full cursor-pointer group">
+      <div className="h-12 w-12 rounded-lg bg-background border border-border flex items-center justify-center mb-4 shadow-sm group-hover:border-primary/30 transition-colors">
         {icon}
       </div>
-      <h3 className="font-bold text-lg mb-2">{title}</h3>
+      <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{title}</h3>
       <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link href={href} data-testid={`link-tool-card-${href.replace('/', '')}`}>
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }
 
 function Badge({ children }: { children: React.ReactNode }) {
