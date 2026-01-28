@@ -7,6 +7,7 @@ import { z } from "zod";
 import { load } from "cheerio";
 import { URL } from "url";
 import OpenAI from "openai";
+import whois from "whois-json";
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -428,6 +429,76 @@ export async function registerRoutes(
     } catch (err: any) {
       console.error(err);
       res.status(500).json({ message: "Failed to scan website", error: err.message });
+    }
+  });
+
+  // POST /api/whois-check (WHOIS domain lookup)
+  app.post('/api/whois-check', async (req, res) => {
+    try {
+      const { domain } = req.body;
+      
+      if (!domain || typeof domain !== 'string') {
+        return res.status(400).json({ message: "Please provide a domain" });
+      }
+
+      let cleanDomain = domain.trim().toLowerCase();
+      
+      // Remove protocol if present
+      cleanDomain = cleanDomain.replace(/^https?:\/\//, '');
+      // Remove trailing slashes and paths
+      cleanDomain = cleanDomain.split('/')[0];
+      // Remove www. prefix if present
+      cleanDomain = cleanDomain.replace(/^www\./, '');
+
+      const whoisData = await whois(cleanDomain);
+      
+      // Build a formatted raw text output similar to the example
+      const rawLines: string[] = [`WHOIS Information for ${cleanDomain}`];
+      
+      const formatField = (label: string, value: any) => {
+        if (value === undefined || value === null || value === '') return;
+        if (Array.isArray(value)) {
+          value.forEach(v => rawLines.push(`${label.padEnd(33, ' ')}${v}`));
+        } else {
+          rawLines.push(`${label.padEnd(33, ' ')}${value}`);
+        }
+      };
+
+      formatField('Domain Name:', whoisData.domainName);
+      formatField('Registrar ID:', whoisData.registrarIanaId || whoisData.registrarId);
+      formatField('Registrar Name:', whoisData.registrar || whoisData.registrarName);
+      formatField('Status:', whoisData.domainStatus || whoisData.status);
+      formatField('Creation Date:', whoisData.creationDate || whoisData.createdDate);
+      formatField('Updated Date:', whoisData.updatedDate);
+      formatField('Expiration Date:', whoisData.registryExpiryDate || whoisData.expirationDate);
+      rawLines.push('');
+      formatField('Registrant Name:', whoisData.registrantName);
+      formatField('Registrant Organization:', whoisData.registrantOrganization);
+      formatField('Registrant Email:', whoisData.registrantEmail);
+      formatField('Registrant Country:', whoisData.registrantCountry);
+      rawLines.push('');
+      formatField('Tech Name:', whoisData.techName);
+      formatField('Tech Organization:', whoisData.techOrganization);
+      formatField('Tech Email:', whoisData.techEmail);
+      rawLines.push('');
+      formatField('Admin Name:', whoisData.adminName);
+      formatField('Admin Organization:', whoisData.adminOrganization);
+      formatField('Admin Email:', whoisData.adminEmail);
+      rawLines.push('');
+      formatField('Name Server:', whoisData.nameServer);
+      formatField('DNSSEC:', whoisData.dnssec);
+
+      res.json({ 
+        domain: cleanDomain, 
+        data: whoisData,
+        rawText: rawLines.filter(line => line !== undefined).join('\n')
+      });
+    } catch (err: any) {
+      console.error('WHOIS Error:', err);
+      res.status(500).json({ 
+        domain: req.body.domain,
+        error: err.message || "Failed to lookup WHOIS information"
+      });
     }
   });
 

@@ -10,6 +10,7 @@ import RedirectChecker from "@/pages/RedirectChecker";
 import SecurityHeaderChecker from "@/pages/SecurityHeaderChecker";
 import RobotsTxtTool from "@/pages/RobotsTxtTool";
 import BrokenLinkChecker from "@/pages/BrokenLinkChecker";
+import WhoisChecker from "@/pages/WhoisChecker";
 
 function Router() {
   return (
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/security-checker" component={SecurityHeaderChecker} />
       <Route path="/robots-txt" component={RobotsTxtTool} />
       <Route path="/broken-links" component={BrokenLinkChecker} />
+      <Route path="/whois-checker" component={WhoisChecker} />
       {/* Route for handling /google.com pattern */}
       <Route path="/:domain" component={DomainReport} />
       <Route component={NotFound} />
