@@ -39,7 +39,7 @@ export const api = {
       path: '/api/scan',
       input: z.object({
         url: z.string().min(1),
-        tools: z.array(z.enum(["redirect", "broken_links", "security", "robots", "ai"])).min(1),
+        tools: z.array(z.enum(["redirect", "broken_links", "security", "robots", "ai", "whois"])).min(1),
       }),
       responses: {
         200: z.custom<typeof domains.$inferSelect>(),
