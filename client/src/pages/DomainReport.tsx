@@ -36,25 +36,31 @@ export default function DomainReport() {
 
   useEffect(() => {
     if (aiData) {
-      document.title = `${aiData.seoTitle} | SEO Report`;
+      if (aiData.seoTitle) {
+        document.title = `${aiData.seoTitle} | SEO Report`;
+      }
       
       // Update meta description
-      let metaDesc = document.querySelector('meta[name="description"]');
-      if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.setAttribute('name', 'description');
-        document.head.appendChild(metaDesc);
+      if (aiData.seoDescription) {
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+          metaDesc = document.createElement('meta');
+          metaDesc.setAttribute('name', 'description');
+          document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', aiData.seoDescription);
       }
-      metaDesc.setAttribute('content', aiData.seoDescription);
 
       // Update keywords
-      let metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (!metaKeywords) {
-        metaKeywords = document.createElement('meta');
-        metaKeywords.setAttribute('name', 'keywords');
-        document.head.appendChild(metaKeywords);
+      if (aiData.seoKeywords && aiData.seoKeywords.length > 0) {
+        let metaKeywords = document.querySelector('meta[name="keywords"]');
+        if (!metaKeywords) {
+          metaKeywords = document.createElement('meta');
+          metaKeywords.setAttribute('name', 'keywords');
+          document.head.appendChild(metaKeywords);
+        }
+        metaKeywords.setAttribute('content', aiData.seoKeywords.join(', '));
       }
-      metaKeywords.setAttribute('content', aiData.seoKeywords.join(', '));
     } else if (data) {
       document.title = `SEO Report for ${data.domain}`;
     }
@@ -113,7 +119,7 @@ export default function DomainReport() {
               <CardContent className="p-6 space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-2">About this Website</h3>
-                  <p className="text-muted-foreground leading-relaxed">{aiData.summary}</p>
+                  <p className="text-muted-foreground leading-relaxed">{aiData.summary || "No summary available."}</p>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6">
@@ -121,20 +127,24 @@ export default function DomainReport() {
                     <h4 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground/80">
                       <Briefcase className="w-4 h-4" /> Services & Products
                     </h4>
-                    <ul className="space-y-2">
-                      {aiData.services.map((service, i) => (
-                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
-                          {service}
-                        </li>
-                      ))}
-                    </ul>
+                    {aiData.services && aiData.services.length > 0 ? (
+                      <ul className="space-y-2">
+                        {aiData.services.map((service, i) => (
+                          <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                            {service}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">No services detected.</p>
+                    )}
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground/80">
                       <MapPin className="w-4 h-4" /> Locations
                     </h4>
-                    {aiData.locations.length > 0 ? (
+                    {aiData.locations && aiData.locations.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {aiData.locations.map((loc, i) => (
                           <span key={i} className="px-2.5 py-1 bg-white dark:bg-black/40 border border-border rounded-md text-xs font-medium text-muted-foreground">
@@ -153,11 +163,11 @@ export default function DomainReport() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-1">
                       <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Recommended Title</span>
-                      <p className="font-medium text-sm border border-border bg-background p-2 rounded">{aiData.seoTitle}</p>
+                      <p className="font-medium text-sm border border-border bg-background p-2 rounded">{aiData.seoTitle || "No title recommendation"}</p>
                     </div>
                     <div className="space-y-1">
                       <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Recommended Description</span>
-                      <p className="text-sm border border-border bg-background p-2 rounded text-muted-foreground">{aiData.seoDescription}</p>
+                      <p className="text-sm border border-border bg-background p-2 rounded text-muted-foreground">{aiData.seoDescription || "No description recommendation"}</p>
                     </div>
                   </div>
                 </div>
@@ -184,7 +194,7 @@ export default function DomainReport() {
               <CardContent className="p-6 space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-2">About this Website</h3>
-                  <p className="text-muted-foreground leading-relaxed">{aiData.summary}</p>
+                  <p className="text-muted-foreground leading-relaxed">{aiData.summary || "No summary available."}</p>
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6">
@@ -192,20 +202,24 @@ export default function DomainReport() {
                     <h4 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground/80">
                       <Briefcase className="w-4 h-4" /> Services & Products
                     </h4>
-                    <ul className="space-y-2">
-                      {aiData.services.map((service, i) => (
-                        <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
-                          {service}
-                        </li>
-                      ))}
-                    </ul>
+                    {aiData.services && aiData.services.length > 0 ? (
+                      <ul className="space-y-2">
+                        {aiData.services.map((service, i) => (
+                          <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                            {service}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">No services detected.</p>
+                    )}
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold mb-3 flex items-center gap-2 text-foreground/80">
                       <MapPin className="w-4 h-4" /> Locations
                     </h4>
-                    {aiData.locations.length > 0 ? (
+                    {aiData.locations && aiData.locations.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {aiData.locations.map((loc, i) => (
                           <span key={i} className="px-2.5 py-1 bg-white dark:bg-black/40 border border-border rounded-md text-xs font-medium text-muted-foreground">
@@ -224,11 +238,11 @@ export default function DomainReport() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-1">
                       <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Recommended Title</span>
-                      <p className="font-medium text-sm border border-border bg-background p-2 rounded">{aiData.seoTitle}</p>
+                      <p className="font-medium text-sm border border-border bg-background p-2 rounded">{aiData.seoTitle || "No title recommendation"}</p>
                     </div>
                     <div className="space-y-1">
                       <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Recommended Description</span>
-                      <p className="text-sm border border-border bg-background p-2 rounded text-muted-foreground">{aiData.seoDescription}</p>
+                      <p className="text-sm border border-border bg-background p-2 rounded text-muted-foreground">{aiData.seoDescription || "No description recommendation"}</p>
                     </div>
                   </div>
                 </div>
