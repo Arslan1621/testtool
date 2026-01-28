@@ -2,13 +2,84 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { storage } from "./storage";
+import path from "path";
+import fs from "fs";
 
 const app = express();
 const httpServer = createServer(app);
 
-declare module "http" {
-  interface IncomingMessage {
-    rawBody: unknown;
+// Helper to inject SEO tags into HTML
+async function injectSEOTags(req: Request, res: Response, next: NextFunction) {
+  // Only handle GET requests for potential page routes, not API or static files
+  if (req.method !== 'GET' || req.path.startsWith('/api') || req.path.includes('.')) {
+    return next();
+  }
+
+  try {
+    const domainName = req.path.slice(1); // Remove leading slash
+    const domainData = domainName ? await storage.getDomain(domainName) : null;
+
+    let title = "WebTools.io - Professional SEO Analysis & Audit Tools";
+    let description = "Comprehensive web analysis for redirects, broken links, security headers, and robots.txt. Analyze your technical SEO instantly.";
+    let ogTitle = title;
+    let ogDescription = description;
+    let ogUrl = `https://${req.get('host')}${req.path}`;
+
+    if (domainData) {
+      title = `${domainData.domain} SEO Analysis Report | WebTools.io`;
+      description = `Technical SEO audit for ${domainData.domain}. View redirect chains, security headers, broken links, and AI-powered summaries.`;
+      
+      if (domainData.aiData && typeof domainData.aiData === 'object' && 'seoTitle' in domainData.aiData) {
+        const ai = domainData.aiData as any;
+        title = ai.seoTitle || title;
+        description = ai.seoDescription || description;
+      }
+      
+      ogTitle = title;
+      ogDescription = description;
+    }
+
+    const indexPath = process.env.NODE_ENV === "production" 
+      ? path.resolve(__dirname, "public", "index.html")
+      : path.resolve(__dirname, "..", "client", "index.html");
+
+    if (!fs.existsSync(indexPath)) {
+      return next();
+    }
+
+    let html = fs.readFileSync(indexPath, "utf8");
+
+    const seoTags = `
+    <title>${title}</title>
+    <meta name="description" content="${description}" />
+    <meta property="og:title" content="${ogTitle}" />
+    <meta property="og:description" content="${ogDescription}" />
+    <meta property="og:url" content="${ogUrl}" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "${title}",
+      "description": "${description}",
+      "author": {
+        "@type": "Organization",
+        "name": "WebTools.io"
+      }
+    }
+    </script>
+    `;
+
+    // Remove existing title if any and inject new tags
+    html = html.replace(/<title>.*?<\/title>/, "");
+    html = html.replace("</head>", `${seoTags}</head>`);
+
+    res.send(html);
+  } catch (err) {
+    console.error("SEO Injection Error:", err);
+    next();
   }
 }
 
@@ -61,6 +132,9 @@ app.use((req, res, next) => {
 
 (async () => {
   await registerRoutes(httpServer, app);
+
+  // Inject SEO tags for non-API routes
+  app.use(injectSEOTags);
 
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

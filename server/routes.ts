@@ -185,10 +185,19 @@ export async function registerRoutes(
     res.json(list);
   });
 
+  // GET /robots.txt
+  app.get('/robots.txt', (_req, res) => {
+    const robots = `User-agent: *
+Allow: /
+Sitemap: https://${_req.get('host')}/sitemap.xml`;
+    res.header('Content-Type', 'text/plain');
+    res.send(robots);
+  });
+
   // GET /sitemap.xml
   app.get('/sitemap.xml', async (_req, res) => {
     try {
-      const domains = await storage.getRecentDomains(1000); // Get all/many
+      const domains = await storage.getRecentDomains(50000); // Get more for sitemap
       const baseUrl = `https://${_req.get('host')}`;
       
       let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -215,6 +224,7 @@ export async function registerRoutes(
       res.header('Content-Type', 'application/xml');
       res.send(xml);
     } catch (err) {
+      console.error('Sitemap error:', err);
       res.status(500).send('Error generating sitemap');
     }
   });
@@ -460,7 +470,7 @@ export async function registerRoutes(
         if (Array.isArray(value)) {
           value.forEach(v => rawLines.push(`${label.padEnd(33, ' ')}${v}`));
         } else {
-          rawLines.push(`${label.padEnd(33, ' ')}${value}`);
+          rawLines.push(`${label.padEnd(33, ' ')}${String(value)}`);
         }
       };
 
