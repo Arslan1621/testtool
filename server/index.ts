@@ -9,6 +9,12 @@ import fs from "fs";
 const app = express();
 const httpServer = createServer(app);
 
+declare module "http" {
+  interface IncomingMessage {
+    rawBody: unknown;
+  }
+}
+
 // Helper to inject SEO tags into HTML
 async function injectSEOTags(req: Request, res: Response, next: NextFunction) {
   // Only handle GET requests for potential page routes, not API or static files
