@@ -46,4 +46,4 @@ integrations = ["javascript_openai_ai_integrations:2.0.0"]
 [userenv.shared]
 AI_INTEGRATIONS_OPENAI_BASE_URL = "http://localhost:1106/modelfarm/openai"
 AI_INTEGRATIONS_OPENAI_API_KEY = "_DUMMY_API_KEY_"
-VITE_CLERK_PUBLISHABLE_KEY = "pk_test_Y2xlcmsud2VidG9vbHMuaW8k"
+VITE_CLERK_PUBLISHABLE_KEY = "sk_test_UUaDasTdz6maB9pYb4kRgyWTHdHYR2zotGPCVo0hkB"
