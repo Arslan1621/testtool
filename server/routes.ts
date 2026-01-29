@@ -15,7 +15,47 @@ const openai = new OpenAI({
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
 });
 
+// @ts-ignore
+const rdap = require("node-rdap");
+
 // --- Scanning Helpers ---
+
+async function lookupWhois(domain: string) {
+  try {
+    const whoisData = await whois(domain);
+    const rawResponse = JSON.stringify(whoisData).toLowerCase();
+    if (rawResponse.includes("rate limit exceeded") || Object.keys(whoisData).length <= 1) {
+      throw new Error("WHOIS rate limit or empty response");
+    }
+    return whoisData;
+  } catch (err) {
+    console.log(`WHOIS failed for ${domain}, trying RDAP fallback...`);
+    try {
+      const result = await rdap.domain(domain);
+      if (!result) return {};
+      const registrar = result.entities?.find((e: any) => e.roles?.includes("registrar"));
+      const registrant = result.entities?.find((e: any) => e.roles?.includes("registrant"));
+      const events = result.events || [];
+      const registrationEvent = events.find((e: any) => e.eventAction === "registration");
+      const expirationEvent = events.find((e: any) => e.eventAction === "expiration");
+      const lastChangedEvent = events.find((e: any) => e.eventAction === "last changed");
+      return {
+        domainName: result.ldhName,
+        registrar: registrar?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
+        creationDate: registrationEvent?.eventDate,
+        expirationDate: expirationEvent?.eventDate,
+        updatedDate: lastChangedEvent?.eventDate,
+        status: result.status?.[0],
+        nameServer: result.nameservers?.map((ns: any) => ns.ldhName),
+        registrantName: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
+        registrantOrganization: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "org")?.[3],
+      };
+    } catch (rdapErr) {
+      console.error("RDAP Lookup Error:", rdapErr);
+      return {};
+    }
+  }
+}
 
 // 1. Redirect Checker
 async function checkRedirects(startUrl: string) {
@@ -173,6 +213,42 @@ async function checkAiSummary(url: string) {
   }
 }
 
+async function lookupWhois(domain: string) {
+  try {
+    const whoisData = await whois(domain);
+    const rawResponse = JSON.stringify(whoisData).toLowerCase();
+    if (rawResponse.includes("rate limit exceeded") || Object.keys(whoisData).length <= 1) {
+      throw new Error("WHOIS rate limit or empty response");
+    }
+    return whoisData;
+  } catch (err) {
+    console.log(`WHOIS failed for ${domain}, trying RDAP fallback...`);
+    try {
+      const result = await rdap.domain(domain);
+      if (!result) return {};
+      const registrar = result.entities?.find((e: any) => e.roles?.includes("registrar"));
+      const registrant = result.entities?.find((e: any) => e.roles?.includes("registrant"));
+      const events = result.events || [];
+      const registrationEvent = events.find((e: any) => e.eventAction === "registration");
+      const expirationEvent = events.find((e: any) => e.eventAction === "expiration");
+      const lastChangedEvent = events.find((e: any) => e.eventAction === "last changed");
+      return {
+        domainName: result.ldhName,
+        registrar: registrar?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
+        creationDate: registrationEvent?.eventDate,
+        expirationDate: expirationEvent?.eventDate,
+        updatedDate: lastChangedEvent?.eventDate,
+        status: result.status?.[0],
+        nameServer: result.nameservers?.map((ns: any) => ns.ldhName),
+        registrantName: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
+        registrantOrganization: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "org")?.[3],
+      };
+    } catch (rdapErr) {
+      console.error("RDAP Lookup Error:", rdapErr);
+      return {};
+    }
+  }
+}
 
 export async function registerRoutes(
   httpServer: Server,
@@ -479,7 +555,7 @@ Sitemap: https://${_req.get('host')}/sitemap.xml`;
       // Remove www. prefix if present
       cleanDomain = cleanDomain.replace(/^www\./, '');
 
-      const whoisData = await whois(cleanDomain);
+      const whoisData = await lookupWhois(cleanDomain);
       
       // Build a formatted raw text output similar to the example
       const rawLines: string[] = [`WHOIS Information for ${cleanDomain}`];
@@ -569,7 +645,7 @@ Sitemap: https://${_req.get('host')}/sitemap.xml`;
 
       if (input.tools.includes('whois')) {
         try {
-          const whoisData = await whois(domainName);
+          const whoisData = await lookupWhois(domainName);
           updateData.whoisData = { domain: domainName, data: whoisData };
         } catch (err: any) {
           updateData.whoisData = { domain: domainName, error: err.message };
