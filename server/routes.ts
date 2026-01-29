@@ -8,15 +8,14 @@ import { load } from "cheerio";
 import { URL } from "url";
 import OpenAI from "openai";
 import whois from "whois-json";
+// @ts-ignore
+import * as rdap from "node-rdap";
 
 // Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
 });
-
-// @ts-ignore
-const rdap = require("node-rdap");
 
 // --- Scanning Helpers ---
 
@@ -210,43 +209,6 @@ async function checkAiSummary(url: string) {
   } catch (err: any) {
     console.error("AI Summary Error:", err);
     return { error: "Failed to generate AI summary", details: err.message };
-  }
-}
-
-async function lookupWhois(domain: string) {
-  try {
-    const whoisData = await whois(domain);
-    const rawResponse = JSON.stringify(whoisData).toLowerCase();
-    if (rawResponse.includes("rate limit exceeded") || Object.keys(whoisData).length <= 1) {
-      throw new Error("WHOIS rate limit or empty response");
-    }
-    return whoisData;
-  } catch (err) {
-    console.log(`WHOIS failed for ${domain}, trying RDAP fallback...`);
-    try {
-      const result = await rdap.domain(domain);
-      if (!result) return {};
-      const registrar = result.entities?.find((e: any) => e.roles?.includes("registrar"));
-      const registrant = result.entities?.find((e: any) => e.roles?.includes("registrant"));
-      const events = result.events || [];
-      const registrationEvent = events.find((e: any) => e.eventAction === "registration");
-      const expirationEvent = events.find((e: any) => e.eventAction === "expiration");
-      const lastChangedEvent = events.find((e: any) => e.eventAction === "last changed");
-      return {
-        domainName: result.ldhName,
-        registrar: registrar?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
-        creationDate: registrationEvent?.eventDate,
-        expirationDate: expirationEvent?.eventDate,
-        updatedDate: lastChangedEvent?.eventDate,
-        status: result.status?.[0],
-        nameServer: result.nameservers?.map((ns: any) => ns.ldhName),
-        registrantName: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
-        registrantOrganization: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "org")?.[3],
-      };
-    } catch (rdapErr) {
-      console.error("RDAP Lookup Error:", rdapErr);
-      return {};
-    }
   }
 }
 
