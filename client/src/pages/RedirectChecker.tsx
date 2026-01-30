@@ -80,7 +80,7 @@ export default function RedirectChecker() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <div className="relative overflow-hidden bg-black text-white pb-24 pt-16">
+      <div className="relative overflow-hidden bg-black text-white pb-16 pt-16">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90" />
         
@@ -105,31 +105,32 @@ export default function RedirectChecker() {
           >
             Trace redirect chains, identify loops, and catch SEO issues before they impact your rankings.
           </motion.p>
-        </div>
-      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
-        <Card className="shadow-xl border-border overflow-hidden bg-card">
-          <CardHeader className="pb-4 bg-card">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-amber-500" />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-2xl"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div className="text-left">
+                <h2 className="flex items-center gap-2 text-xl font-bold text-white">
+                  <Zap className="w-5 h-5 text-amber-400" />
                   Check Redirects
-                </CardTitle>
-                <CardDescription className="mt-1">
+                </h2>
+                <p className="text-sm text-slate-300 mt-1">
                   {mode === "single" ? "Enter a single URL to check" : "Enter multiple URLs, one per line"}
-                </CardDescription>
+                </p>
               </div>
-              <div className="flex items-center bg-muted rounded-lg p-1">
+              <div className="flex items-center bg-white/10 rounded-lg p-1">
                 <button
                   type="button"
                   data-testid="button-mode-single"
                   onClick={() => setMode("single")}
                   className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     mode === "single" 
-                      ? "bg-background text-foreground shadow-sm" 
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white text-slate-900 shadow-sm" 
+                      : "text-slate-300 hover:text-white"
                   }`}
                 >
                   <Globe className="w-4 h-4" />
@@ -141,8 +142,8 @@ export default function RedirectChecker() {
                   onClick={handleBulkModeClick}
                   className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     mode === "bulk" 
-                      ? "bg-background text-foreground shadow-sm" 
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white text-slate-900 shadow-sm" 
+                      : "text-slate-300 hover:text-white"
                   }`}
                 >
                   <List className="w-4 h-4" />
@@ -150,20 +151,19 @@ export default function RedirectChecker() {
                 </button>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === "single" ? (
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Globe className="h-5 w-5 text-muted-foreground" />
+                    <Globe className="h-5 w-5 text-slate-400" />
                   </div>
                   <Input
                     data-testid="input-single-url"
                     placeholder="https://example.com"
                     value={singleUrl}
                     onChange={(e) => setSingleUrl(e.target.value)}
-                    className="pl-10 h-12 text-base"
+                    className="pl-10 h-12 text-base bg-white text-slate-900 border-0 focus-visible:ring-2 ring-primary"
                   />
                 </div>
               ) : (
@@ -172,18 +172,18 @@ export default function RedirectChecker() {
                   placeholder={"https://example.com\nhttps://example.org/page\nhttps://test.com/redirect\n\nEnter one URL per line..."}
                   value={bulkUrls}
                   onChange={(e) => setBulkUrls(e.target.value)}
-                  className="min-h-[200px] font-mono text-sm"
+                  className="min-h-[200px] font-mono text-sm bg-white text-slate-900 border-0 focus-visible:ring-2 ring-primary"
                 />
               )}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div className="flex items-center gap-2">
                   {urlCount > 0 && (
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs bg-white/20 text-white border-white/30">
                       {urlCount} URL{urlCount > 1 ? 's' : ''} to check
                     </Badge>
                   )}
                   {mode === "bulk" && (
-                    <span className="text-xs text-muted-foreground">Unlimited URLs supported</span>
+                    <span className="text-xs text-slate-300">Unlimited URLs supported</span>
                   )}
                 </div>
                 <Button 
@@ -206,8 +206,11 @@ export default function RedirectChecker() {
                 </Button>
               </div>
             </form>
-          </CardContent>
-        </Card>
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
         {results && results.length > 0 && (
           <motion.div 

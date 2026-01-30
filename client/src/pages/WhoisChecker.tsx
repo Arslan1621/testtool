@@ -99,7 +99,7 @@ export default function WhoisChecker() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <div className="relative overflow-hidden bg-black text-white pb-24 pt-16">
+      <div className="relative overflow-hidden bg-black text-white pb-16 pt-16">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90" />
         
@@ -124,32 +124,34 @@ export default function WhoisChecker() {
           >
             Look up domain registration information including registrar, owner details, and name servers.
           </motion.p>
-        </div>
-      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
-        <Card className="shadow-xl border-border overflow-hidden bg-card">
-          <CardHeader className="pb-4 bg-card">
-            <CardTitle className="flex items-center gap-2">
-              <Search className="w-5 h-5 text-blue-500" />
-              Domain WHOIS Lookup
-            </CardTitle>
-            <CardDescription className="mt-1">
-              Enter a domain name to retrieve its WHOIS information
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-2xl"
+          >
+            <div className="text-left mb-6">
+              <h2 className="flex items-center gap-2 text-xl font-bold text-white">
+                <Search className="w-5 h-5 text-blue-400" />
+                Domain WHOIS Lookup
+              </h2>
+              <p className="text-sm text-slate-300 mt-1">
+                Enter a domain name to retrieve its WHOIS information
+              </p>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Globe className="h-5 w-5 text-muted-foreground" />
+                  <Globe className="h-5 w-5 text-slate-400" />
                 </div>
                 <Input
                   data-testid="input-domain"
                   placeholder="example.com"
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
-                  className="pl-10 h-12 text-base"
+                  className="pl-10 h-12 text-base bg-white text-slate-900 border-0 focus-visible:ring-2 ring-primary"
                 />
               </div>
               <div className="flex justify-end">
@@ -173,9 +175,11 @@ export default function WhoisChecker() {
                 </Button>
               </div>
             </form>
-          </CardContent>
-        </Card>
+          </motion.div>
+        </div>
+      </div>
 
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         {result && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}

@@ -90,7 +90,7 @@ export default function SecurityHeaderChecker() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <div className="relative overflow-hidden bg-black text-white pb-24 pt-16">
+      <div className="relative overflow-hidden bg-black text-white pb-16 pt-16">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90" />
         
@@ -115,32 +115,34 @@ export default function SecurityHeaderChecker() {
           >
             Analyze HTTP security headers to identify vulnerabilities and improve your website's security posture.
           </motion.p>
-        </div>
-      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
-        <Card className="shadow-xl border-border overflow-hidden bg-card">
-          <CardHeader className="pb-4 bg-card">
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-purple-500" />
-              Check Security Headers
-            </CardTitle>
-            <CardDescription className="mt-1">
-              Enter a URL to analyze its HTTP security headers
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-2xl"
+          >
+            <div className="text-left mb-6">
+              <h2 className="flex items-center gap-2 text-xl font-bold text-white">
+                <ShieldCheck className="w-5 h-5 text-purple-400" />
+                Check Security Headers
+              </h2>
+              <p className="text-sm text-slate-300 mt-1">
+                Enter a URL to analyze its HTTP security headers
+              </p>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Globe className="h-5 w-5 text-muted-foreground" />
+                  <Globe className="h-5 w-5 text-slate-400" />
                 </div>
                 <Input
                   data-testid="input-url"
                   placeholder="example.com or https://example.com"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  className="pl-10 h-12 text-base"
+                  className="pl-10 h-12 text-base bg-white text-slate-900 border-0 focus-visible:ring-2 ring-primary"
                 />
               </div>
               <div className="flex justify-end">
@@ -163,9 +165,11 @@ export default function SecurityHeaderChecker() {
                 </Button>
               </div>
             </form>
-          </CardContent>
-        </Card>
+          </motion.div>
+        </div>
+      </div>
 
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         {error && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}

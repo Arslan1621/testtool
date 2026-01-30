@@ -101,7 +101,7 @@ export default function BrokenLinkChecker() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <div className="relative overflow-hidden bg-black text-white pb-24 pt-16">
+      <div className="relative overflow-hidden bg-black text-white pb-16 pt-16">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90" />
         
@@ -126,31 +126,32 @@ export default function BrokenLinkChecker() {
           >
             Find broken links on your website to improve user experience and SEO rankings.
           </motion.p>
-        </div>
-      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
-        <Card className="shadow-xl border-border overflow-hidden bg-card">
-          <CardHeader className="pb-4 bg-card">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Unplug className="w-5 h-5 text-red-500" />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-2xl"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div className="text-left">
+                <h2 className="flex items-center gap-2 text-xl font-bold text-white">
+                  <Unplug className="w-5 h-5 text-red-400" />
                   Check Broken Links
-                </CardTitle>
-                <CardDescription className="mt-1">
+                </h2>
+                <p className="text-sm text-slate-300 mt-1">
                   {mode === "single" ? "Check if a single URL is accessible" : "Scan a webpage for all broken links"}
-                </CardDescription>
+                </p>
               </div>
-              <div className="flex items-center bg-muted rounded-lg p-1">
+              <div className="flex items-center bg-white/10 rounded-lg p-1">
                 <button
                   type="button"
                   data-testid="button-mode-single"
                   onClick={() => setMode("single")}
                   className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     mode === "single" 
-                      ? "bg-background text-foreground shadow-sm" 
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white text-slate-900 shadow-sm" 
+                      : "text-slate-300 hover:text-white"
                   }`}
                 >
                   <Link2 className="w-4 h-4" />
@@ -162,8 +163,8 @@ export default function BrokenLinkChecker() {
                   onClick={handleWebsiteModeClick}
                   className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
                     mode === "website" 
-                      ? "bg-background text-foreground shadow-sm" 
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white text-slate-900 shadow-sm" 
+                      : "text-slate-300 hover:text-white"
                   }`}
                 >
                   <Globe className="w-4 h-4" />
@@ -171,23 +172,22 @@ export default function BrokenLinkChecker() {
                 </button>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Globe className="h-5 w-5 text-muted-foreground" />
+                  <Globe className="h-5 w-5 text-slate-400" />
                 </div>
                 <Input
                   data-testid="input-url"
                   placeholder={mode === "single" ? "https://example.com/page" : "https://example.com"}
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  className="pl-10 h-12 text-base"
+                  className="pl-10 h-12 text-base bg-white text-slate-900 border-0 focus-visible:ring-2 ring-primary"
                 />
               </div>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-300">
                   {mode === "single" 
                     ? "Check if a specific URL returns a valid response" 
                     : "Scans all links found on the page"}
@@ -211,9 +211,11 @@ export default function BrokenLinkChecker() {
                 </Button>
               </div>
             </form>
-          </CardContent>
-        </Card>
+          </motion.div>
+        </div>
+      </div>
 
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         {error && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
