@@ -80,9 +80,9 @@ export default function RedirectChecker() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <div className="relative overflow-hidden bg-slate-900 text-white pb-24 pt-16">
+      <div className="relative overflow-hidden bg-black text-white pb-24 pt-16">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2034&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90" />
         
         <div className="relative max-w-4xl mx-auto px-4 text-center z-10">
           <motion.div 

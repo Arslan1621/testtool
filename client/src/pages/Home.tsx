@@ -54,15 +54,15 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-slate-900 text-white pb-24 pt-16">
+      <div className="relative overflow-hidden bg-black text-white pb-24 pt-16">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center opacity-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/90" />
         
         <div className="relative max-w-4xl mx-auto px-4 text-center z-10">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-display font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-blue-200"
+            className="text-4xl md:text-6xl font-display font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-amber-100 to-amber-200"
           >
             Master Your Technical SEO
           </motion.h1>
