@@ -273,6 +273,148 @@ export default function SecurityHeaderChecker() {
             </Card>
           </motion.div>
         )}
+
+        {/* Educational Content Section */}
+        <div className="mt-16 space-y-12">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold font-display text-foreground mb-4">Understanding Security Headers</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Learn what security headers are, why they matter, and how to implement them
+            </p>
+          </div>
+
+          {/* What is Security Header Checker */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-purple-500" />
+                What is a Security Header Checker?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <p>
+                A Security Header Checker analyzes the HTTP response headers of a website to identify security configurations. These headers instruct browsers on how to handle your content and protect against common web vulnerabilities.
+              </p>
+              <p>
+                Security headers are one of the easiest and most effective ways to improve your website's security posture. They can prevent attacks like cross-site scripting (XSS), clickjacking, and man-in-the-middle attacks without requiring changes to your application code.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* How it Works */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="w-5 h-5 text-primary" />
+                How It Works
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <ol className="list-decimal list-inside space-y-3">
+                <li><strong>Enter a URL:</strong> Provide your website URL to analyze its security headers.</li>
+                <li><strong>Fetch Headers:</strong> The tool makes a request to your URL and captures all HTTP response headers.</li>
+                <li><strong>Analyze Security:</strong> Each security-related header is checked against best practices and security standards.</li>
+                <li><strong>Score & Report:</strong> Get a security score and detailed recommendations for improvement.</li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          {/* Common Security Headers */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-amber-500" />
+                Essential Security Headers
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h4 className="font-semibold text-foreground">HSTS (HTTP Strict Transport Security)</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Forces browsers to only use HTTPS connections, preventing downgrade attacks and cookie hijacking. Essential for any site handling sensitive data.
+                  </p>
+                  <code className="text-xs bg-muted px-2 py-1 rounded mt-2 block">Strict-Transport-Security: max-age=31536000; includeSubDomains</code>
+                </div>
+
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <h4 className="font-semibold text-foreground">CSP (Content Security Policy)</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Controls which resources the browser can load, preventing XSS attacks by blocking inline scripts and unauthorized sources.
+                  </p>
+                  <code className="text-xs bg-muted px-2 py-1 rounded mt-2 block">Content-Security-Policy: default-src 'self'; script-src 'self'</code>
+                </div>
+
+                <div className="border-l-4 border-green-500 pl-4">
+                  <h4 className="font-semibold text-foreground">X-Frame-Options</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Prevents your page from being embedded in iframes on other sites, protecting against clickjacking attacks.
+                  </p>
+                  <code className="text-xs bg-muted px-2 py-1 rounded mt-2 block">X-Frame-Options: DENY</code>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">X-Content-Type-Options</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Prevents browsers from MIME-type sniffing, reducing exposure to drive-by download attacks.
+                  </p>
+                  <code className="text-xs bg-muted px-2 py-1 rounded mt-2 block">X-Content-Type-Options: nosniff</code>
+                </div>
+
+                <div className="border-l-4 border-red-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Referrer-Policy</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Controls how much referrer information is included with requests, protecting user privacy and preventing data leakage.
+                  </p>
+                  <code className="text-xs bg-muted px-2 py-1 rounded mt-2 block">Referrer-Policy: strict-origin-when-cross-origin</code>
+                </div>
+
+                <div className="border-l-4 border-indigo-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Permissions-Policy</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Controls which browser features and APIs can be used, limiting potential attack surfaces.
+                  </p>
+                  <code className="text-xs bg-muted px-2 py-1 rounded mt-2 block">Permissions-Policy: geolocation=(), camera=(), microphone=()</code>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* How to Implement */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                How to Implement Security Headers
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Apache (.htaccess)</h4>
+                  <p className="text-sm">Add headers using Header set directives in your .htaccess file or Apache configuration.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Nginx</h4>
+                  <p className="text-sm">Use add_header directives in your server block or location blocks in nginx.conf.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Cloudflare/CDN</h4>
+                  <p className="text-sm">Many CDNs offer one-click security header settings or custom response header rules.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Application Code</h4>
+                  <p className="text-sm">Set headers in your application middleware (Express, Django, Laravel, etc.).</p>
+                </div>
+              </div>
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mt-4">
+                <p className="text-sm text-foreground">
+                  <strong>Pro Tip:</strong> Start with basic headers and test thoroughly. Some headers like CSP can break functionality if not configured correctly. Use report-only mode first to identify issues.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

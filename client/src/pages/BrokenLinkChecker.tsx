@@ -397,6 +397,152 @@ export default function BrokenLinkChecker() {
             </Card>
           </motion.div>
         )}
+
+        {/* Educational Content Section */}
+        <div className="mt-16 space-y-12">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold font-display text-foreground mb-4">Understanding Broken Links</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Learn what broken links are, why they matter, and how to fix them
+            </p>
+          </div>
+
+          {/* What is Broken Link Checker */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Unplug className="w-5 h-5 text-red-500" />
+                What is a Broken Link Checker?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <p>
+                A Broken Link Checker is a tool that scans web pages to find links that no longer work. These "dead links" lead to error pages instead of the intended content, frustrating users and hurting your website's credibility.
+              </p>
+              <p>
+                Broken links occur when the destination page is deleted, moved without a redirect, or when there's a typo in the URL. Regular link checking is essential for maintaining a healthy website that provides a good user experience and performs well in search rankings.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* How it Works */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ArrowRight className="w-5 h-5 text-primary" />
+                How It Works
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <ol className="list-decimal list-inside space-y-3">
+                <li><strong>Single Link Mode:</strong> Check if a specific URL is accessible and returns a valid response.</li>
+                <li><strong>Website Scan Mode:</strong> Enter a webpage URL and the tool extracts all links from that page.</li>
+                <li><strong>Verification:</strong> Each link is tested by making an HTTP request and checking the response status code.</li>
+                <li><strong>Results Report:</strong> See a breakdown of working links vs broken links, with status codes and anchor text for each.</li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          {/* Common Errors */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-red-500" />
+                Common Link Errors
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="border-l-4 border-red-500 pl-4">
+                  <h4 className="font-semibold text-foreground">404 - Not Found</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The most common broken link error. The page at this URL no longer exists. This happens when content is deleted or URLs are changed without redirects.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">410 - Gone</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The page has been intentionally and permanently removed. Unlike 404, this indicates the content will never return.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">500 - Internal Server Error</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The server encountered an error while trying to load the page. This could be a temporary issue or a server configuration problem.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">502 - Bad Gateway</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The server received an invalid response from an upstream server. Often occurs with load balancers or proxy servers.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">503 - Service Unavailable</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The server is temporarily unable to handle the request due to maintenance or overload. Usually a temporary issue.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Timeout Error</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The server took too long to respond. This could indicate server performance issues or network problems.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">SSL/TLS Error</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The secure connection couldn't be established. Often caused by expired certificates or misconfigured HTTPS.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* How to Resolve */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                How to Fix Broken Links
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Update the Link</h4>
+                  <p className="text-sm">Find the correct URL for the destination page and update your link. Check if the page moved to a new location.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Add a Redirect</h4>
+                  <p className="text-sm">If you control the destination, add a 301 redirect from the old URL to the new one to preserve link equity.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Remove the Link</h4>
+                  <p className="text-sm">If the content no longer exists and there's no alternative, remove the link entirely from your page.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Find Alternative Content</h4>
+                  <p className="text-sm">Replace the broken link with a link to similar, relevant content from another source.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Use Web Archive</h4>
+                  <p className="text-sm">Check archive.org for cached versions of the page. You may be able to link to an archived version.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Contact Site Owner</h4>
+                  <p className="text-sm">For external broken links, reach out to the site owner to report the issue and ask about the correct URL.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

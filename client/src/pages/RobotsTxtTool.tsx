@@ -558,6 +558,156 @@ export default function RobotsTxtTool() {
             </Card>
           </motion.div>
         )}
+
+        {/* Educational Content Section */}
+        <div className="mt-16 space-y-12">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold font-display text-foreground mb-4">Understanding Robots.txt</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Learn what robots.txt is, how it works, and best practices for SEO
+            </p>
+          </div>
+
+          {/* What is Robots.txt */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileCode className="w-5 h-5 text-amber-500" />
+                What is Robots.txt?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <p>
+                Robots.txt is a text file placed at the root of your website (yoursite.com/robots.txt) that tells search engine crawlers which pages they can and cannot access. It's part of the Robots Exclusion Protocol, a standard used by websites to communicate with web crawlers.
+              </p>
+              <p>
+                While robots.txt is a suggestion rather than a security feature (malicious bots can ignore it), reputable search engines like Google, Bing, and others respect these directives. It's essential for controlling how search engines index your site.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* How it Works */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="w-5 h-5 text-primary" />
+                How It Works
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <ol className="list-decimal list-inside space-y-3">
+                <li><strong>Crawler Visits:</strong> When a search engine bot visits your site, it first looks for /robots.txt.</li>
+                <li><strong>Rules Check:</strong> The bot reads the file and checks for rules that match its user-agent.</li>
+                <li><strong>Apply Directives:</strong> Based on Allow and Disallow rules, the bot decides which URLs to crawl.</li>
+                <li><strong>Continue Crawling:</strong> The bot follows the rules while discovering and indexing your content.</li>
+              </ol>
+              <div className="bg-muted/50 p-4 rounded-lg mt-4">
+                <h4 className="font-semibold text-foreground mb-2">Basic Syntax</h4>
+                <pre className="text-xs font-mono">
+{`User-agent: *
+Disallow: /private/
+Disallow: /admin/
+Allow: /public/
+
+Sitemap: https://yoursite.com/sitemap.xml`}
+                </pre>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Common Directives */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-amber-500" />
+                Common Robots.txt Issues
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="border-l-4 border-red-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Blocking Important Content</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Accidentally disallowing pages you want indexed. Always double-check your Disallow rules and test with Google Search Console.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Blocking CSS/JavaScript</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Disallowing /css/ or /js/ folders prevents search engines from rendering your pages properly, which can hurt rankings.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Using robots.txt for Security</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Robots.txt is public and not a security measure. Don't use it to hide sensitive pages - use authentication instead.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Missing Sitemap Reference</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Not including your sitemap URL in robots.txt. Adding it helps search engines discover all your important pages.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Incorrect Syntax</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Typos or incorrect formatting can make rules ineffective. Use our validator to check for syntax errors.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">Disallow: / (Blocking Everything)</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    This completely blocks all crawling. Only use this for staging sites or when you genuinely want no indexing.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Best Practices */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                Robots.txt Best Practices
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Always Include Sitemap</h4>
+                  <p className="text-sm">Add your sitemap URL at the end of robots.txt to help search engines find all your pages.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Use Specific User-Agents</h4>
+                  <p className="text-sm">Target specific bots when needed (Googlebot, Bingbot) instead of always using the wildcard *.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Test Before Deploying</h4>
+                  <p className="text-sm">Use Google Search Console's robots.txt tester to verify your rules work as expected.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Keep It Simple</h4>
+                  <p className="text-sm">Use clear, straightforward rules. Complex patterns can be confusing and error-prone.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Block Duplicate Content</h4>
+                  <p className="text-sm">Disallow URL parameters, print pages, and other duplicate content to save crawl budget.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Review Regularly</h4>
+                  <p className="text-sm">Update robots.txt when your site structure changes to ensure rules are still relevant.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -268,6 +268,137 @@ export default function WhoisChecker() {
             )}
           </motion.div>
         )}
+
+        {/* Educational Content Section */}
+        <div className="mt-16 space-y-12">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold font-display text-foreground mb-4">Understanding WHOIS</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Learn what WHOIS is, how it works, and how to interpret the results
+            </p>
+          </div>
+
+          {/* What is WHOIS */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Search className="w-5 h-5 text-blue-500" />
+                What is WHOIS Lookup?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <p>
+                WHOIS is a protocol used to query databases that store registration information about domain names. When you perform a WHOIS lookup, you're accessing public records about who owns a domain, when it was registered, and when it expires.
+              </p>
+              <p>
+                This information is valuable for research, verifying website ownership, checking domain availability, investigating suspicious websites, and finding contact information for domain administrators.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* How it Works */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="w-5 h-5 text-primary" />
+                How It Works
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <ol className="list-decimal list-inside space-y-3">
+                <li><strong>Enter Domain:</strong> Provide the domain name you want to look up (e.g., example.com).</li>
+                <li><strong>Query Registrar:</strong> The tool queries the appropriate WHOIS database based on the domain's TLD (top-level domain).</li>
+                <li><strong>Parse Response:</strong> Raw WHOIS data is parsed and formatted into readable fields.</li>
+                <li><strong>Display Results:</strong> See structured information including registration dates, owner details, and name servers.</li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          {/* Common WHOIS Fields */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-amber-500" />
+                Understanding WHOIS Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Registrar</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The company through which the domain was registered (e.g., GoDaddy, Namecheap, Google Domains). Contact them for domain management issues.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-green-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Creation Date</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    When the domain was first registered. Older domains often have more trust and authority with search engines.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Expiration Date</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    When the domain registration expires. Important for monitoring - expired domains become available for anyone to register.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Name Servers</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The DNS servers that handle the domain's DNS records. These tell the internet where to find the website's servers.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-500 pl-4">
+                  <h4 className="font-semibold text-foreground">Domain Status</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Indicates the domain's current state (active, locked, pending delete, etc.). Locked domains are protected from unauthorized transfers.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-gray-500 pl-4">
+                  <h4 className="font-semibold text-foreground">DNSSEC</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Shows if DNS Security Extensions are enabled, providing protection against DNS spoofing attacks.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Common Issues */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                Common WHOIS Issues & Solutions
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Privacy Protected</h4>
+                  <p className="text-sm">Many domains use WHOIS privacy services. Contact details show the privacy service instead of the real owner.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">No Data Available</h4>
+                  <p className="text-sm">Some TLDs (like .gov) don't provide public WHOIS. Try the registry's website directly.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Expired Domain</h4>
+                  <p className="text-sm">If a domain shows as expired, it may soon be available for registration or in a redemption period.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Rate Limited</h4>
+                  <p className="text-sm">WHOIS servers may limit queries. Wait a few minutes before trying again if you see rate limit errors.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

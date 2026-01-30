@@ -274,6 +274,144 @@ export default function RedirectChecker() {
             ))}
           </motion.div>
         )}
+
+        {/* Educational Content Section */}
+        <div className="mt-16 space-y-12">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold font-display text-foreground mb-4">Understanding Redirects</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Learn how redirects work, common errors, and best practices for SEO
+            </p>
+          </div>
+
+          {/* What is Redirect Checker */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="w-5 h-5 text-amber-500" />
+                What is a Redirect Checker?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <p>
+                A Redirect Checker is a tool that traces the complete path a URL takes from the initial request to its final destination. When you enter a URL, it follows all redirects in sequence, showing you each step (or "hop") along the way.
+              </p>
+              <p>
+                Redirects are server instructions that automatically send users and search engines from one URL to another. They're commonly used when pages move, websites migrate, or URLs are restructured. Understanding your redirect chains is crucial for maintaining good SEO and user experience.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* How it Works */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ArrowRight className="w-5 h-5 text-primary" />
+                How It Works
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <ol className="list-decimal list-inside space-y-3">
+                <li><strong>Enter a URL:</strong> Provide the URL you want to check. The tool accepts both HTTP and HTTPS URLs.</li>
+                <li><strong>Follow the Chain:</strong> The tool makes a request to your URL and follows each redirect automatically, recording the HTTP status code and destination at each step.</li>
+                <li><strong>View Results:</strong> See the complete redirect chain visualized, including all intermediate hops, status codes, and response headers.</li>
+                <li><strong>Identify Issues:</strong> Spot problems like redirect loops, unnecessary hops, or incorrect status codes that could hurt your SEO.</li>
+              </ol>
+            </CardContent>
+          </Card>
+
+          {/* Common Errors */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-red-500" />
+                Common Redirect Errors
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="border-l-4 border-red-500 pl-4">
+                  <h4 className="font-semibold text-foreground">301 - Moved Permanently</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The URL has permanently moved to a new location. Search engines will transfer SEO value to the new URL. This is the recommended redirect for permanent URL changes.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">302 - Found (Temporary Redirect)</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The URL is temporarily redirected. Search engines may not transfer SEO value. Use this only for genuinely temporary redirects, like during maintenance.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-amber-500 pl-4">
+                  <h4 className="font-semibold text-foreground">307 - Temporary Redirect</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Similar to 302, but guarantees the request method won't change. The browser will repeat the exact same request to the new URL.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h4 className="font-semibold text-foreground">308 - Permanent Redirect</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    Similar to 301, but guarantees the request method won't change. Useful for APIs and form submissions that need permanent redirects.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">404 - Not Found</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The requested URL doesn't exist. If this appears in a redirect chain, the chain is broken and users will see an error page.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">500 - Internal Server Error</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    The server encountered an error processing the redirect. This indicates a server-side problem that needs immediate attention.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-red-600 pl-4">
+                  <h4 className="font-semibold text-foreground">Redirect Loop</h4>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    URL A redirects to URL B, which redirects back to URL A. This creates an infinite loop that browsers will stop after several attempts, showing an error.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* How to Resolve */}
+          <Card className="border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                How to Resolve Redirect Issues
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-muted-foreground">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Too Many Redirects</h4>
+                  <p className="text-sm">Reduce redirect chains to a maximum of 1-2 hops. Update old redirects to point directly to the final destination.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Wrong Redirect Type</h4>
+                  <p className="text-sm">Use 301 for permanent moves and 302/307 only for temporary changes. Incorrect usage can hurt SEO rankings.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Redirect Loops</h4>
+                  <p className="text-sm">Map out your redirect rules and ensure no circular references exist. Check .htaccess, nginx config, or application code.</p>
+                </div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-foreground mb-2">Mixed HTTP/HTTPS</h4>
+                  <p className="text-sm">Ensure all redirects go to HTTPS versions. Avoid HTTP to HTTPS to HTTP chains that waste redirect hops.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
