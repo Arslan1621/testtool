@@ -71,7 +71,7 @@ export function Navbar() {
 
                 <div 
                   className={cn(
-                    "absolute top-full left-0 mt-1 w-64 bg-card border border-border rounded-lg shadow-xl overflow-hidden transition-all duration-200",
+                    "absolute top-full left-0 mt-1 w-64 bg-background border border-border rounded-lg shadow-xl overflow-hidden transition-all duration-200 z-50",
                     toolsOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
                   )}
                 >
@@ -83,13 +83,13 @@ export function Navbar() {
                             "flex items-start gap-3 p-3 rounded-md cursor-pointer transition-colors",
                             location === tool.href 
                               ? "bg-primary/10 text-primary" 
-                              : "hover:bg-muted"
+                              : "text-foreground hover:bg-muted"
                           )}
                           data-testid={`link-tool-${tool.href.replace('/', '')}`}
                         >
                           <tool.icon className="w-5 h-5 mt-0.5 flex-shrink-0" />
                           <div>
-                            <div className="font-medium text-sm">{tool.label}</div>
+                            <div className="font-medium text-sm text-foreground">{tool.label}</div>
                             <div className="text-xs text-muted-foreground">{tool.description}</div>
                           </div>
                         </div>
