@@ -4,11 +4,33 @@ import * as schema from "../../shared/schema";
 
 const { Pool } = pg;
 
-const connectionString = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
+let pool: pg.Pool | null = null;
+let database: ReturnType<typeof drizzle> | null = null;
 
-if (!connectionString) {
-  throw new Error("NEON_DATABASE_URL or DATABASE_URL must be set");
+function getPool() {
+  if (!pool) {
+    const connectionString = process.env.NEON_DATABASE_URL || process.env.DATABASE_URL;
+    if (!connectionString) {
+      throw new Error("NEON_DATABASE_URL or DATABASE_URL must be set");
+    }
+    pool = new Pool({ 
+      connectionString,
+      ssl: { rejectUnauthorized: false }
+    });
+  }
+  return pool;
 }
 
-export const pool = new Pool({ connectionString });
-export const db = drizzle(pool, { schema });
+export function getDb() {
+  if (!database) {
+    database = drizzle(getPool(), { schema });
+  }
+  return database;
+}
+
+export { getPool as pool };
+export const db = new Proxy({} as ReturnType<typeof drizzle>, {
+  get(_, prop) {
+    return (getDb() as any)[prop];
+  }
+});
