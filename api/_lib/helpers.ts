@@ -88,7 +88,7 @@ export async function checkSecurityHeaders(url: string) {
   try {
     const response = await fetch(url, { method: 'HEAD' });
     const headers = response.headers;
-    const results = [];
+    const results: { header: string; value: string | null; status: string; description?: string }[] = [];
     
     const checks = [
       { key: 'strict-transport-security', name: 'HSTS' },
@@ -150,7 +150,7 @@ export async function checkBrokenLinks(url: string) {
       }
     });
 
-    const results = [];
+    const results: { url: string; status: number; isBroken: boolean; error?: string }[] = [];
     const linksToCheck = Array.from(links).slice(0, 20);
 
     for (const link of linksToCheck) {
