@@ -118,8 +118,3 @@
     "bufferutil": "^4.0.8"
   }
 }
-"scripts": {
-  "build": "tsc",
-  "vercel-build": "tsc"
-}
-
