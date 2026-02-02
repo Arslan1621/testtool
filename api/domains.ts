@@ -11,6 +11,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json(list);
   } catch (err: any) {
     console.error('Error fetching domains:', err);
-    return res.status(500).json({ message: err.message });
+    return res.status(500).json({ 
+      message: err.message,
+      code: err.code,
+      detail: err.detail || 'No additional details'
+    });
   }
 }
