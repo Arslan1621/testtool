@@ -3,9 +3,6 @@ import OpenAI from "openai";
 import whois from "whois-json";
 // @ts-ignore
 import * as rdap from "node-rdap";
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const whois = require('whois-json');
 
 const openai = new OpenAI({
   apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY,
