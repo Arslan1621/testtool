@@ -1,6 +1,5 @@
 
 import { domains, type InsertDomain } from "@shared/schema";
-// import { db } from "./db";
 import { db } from "./_lib/db.ts";
 import { eq, desc } from "drizzle-orm";
 
