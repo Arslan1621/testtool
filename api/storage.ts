@@ -1,6 +1,7 @@
 
 import { domains, type InsertDomain } from "@shared/schema";
-import { db } from "./db";
+// import { db } from "./db";
+import { db } from "./db.js";
 import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
