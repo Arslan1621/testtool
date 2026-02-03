@@ -18,7 +18,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     cleanDomain = cleanDomain.split('/')[0];
     cleanDomain = cleanDomain.replace(/^www\./, '');
 
-    const whoisData = await lookupWhois(cleanDomain);
+    // const whoisData = await lookupWhois(cleanDomain);
+    const whoisData: any = await lookupWhois(cleanDomain);
     
     const rawLines: string[] = [`WHOIS Information for ${cleanDomain}`];
     
