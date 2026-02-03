@@ -1,8 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from 'zod';
-import { upsertDomain } from './_lib/storage';
-import { checkRedirects, checkSecurityHeaders, checkRobots, checkBrokenLinks, checkAiSummary, lookupWhois } from './_lib/helpers';
-
+// import { upsertDomain } from './_lib/storage';
+// import { checkRedirects, checkSecurityHeaders, checkRobots, checkBrokenLinks, checkAiSummary, lookupWhois } from './_lib/helpers';
+import { upsertDomain } from './_lib/storage.js'; 
+import { checkRedirects, checkSecurityHeaders, checkRobots, checkBrokenLinks, checkAiSummary, lookupWhois } from './_lib/helpers.js';
 const scanInputSchema = z.object({
   url: z.string().min(1),
   tools: z.array(z.enum(["redirect", "broken_links", "security", "robots", "ai", "whois"])).min(1),
