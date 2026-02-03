@@ -1,6 +1,10 @@
 import { load } from "cheerio";
 import OpenAI from "openai";
-import whois from "whois-json";
+// 1. Import createRequire to handle the non-compliant whois-json library
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const whois = require('whois-json');
+
 // @ts-ignore
 import * as rdap from "node-rdap";
 
