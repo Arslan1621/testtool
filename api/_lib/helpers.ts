@@ -1,46 +1,93 @@
+// import { load } from "cheerio";
+// import OpenAI from "openai";
+// // 1. Import createRequire to handle the non-compliant whois-json library
+// import { createRequire } from 'module';
+// const require = createRequire(import.meta.url);
+// const whois = require('whois-json');
+
+// // @ts-ignore
+// import * as rdap from "node-rdap";
+
 import { load } from "cheerio";
 import OpenAI from "openai";
-// 1. Import createRequire to handle the non-compliant whois-json library
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const whois = require('whois-json');
-
+import whoiser from "whoiser"; // 1. Use the ESM-compliant library
 // @ts-ignore
 import * as rdap from "node-rdap";
+
 
 const openai = new OpenAI({
   apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY,
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
 });
 
+// export async function lookupWhois(domain: string) {
+//   try {
+//     const whoisData = await whois(domain);
+//     const rawResponse = JSON.stringify(whoisData).toLowerCase();
+//     if (rawResponse.includes("rate limit exceeded") || 
+//         rawResponse.includes("retired") || 
+//         rawResponse.includes("use our rdap service") ||
+//         Object.keys(whoisData).length <= 1) {
+//       throw new Error("WHOIS rate limit or empty response");
+//     }
+//     return whoisData;
+//   } catch (err) {
+//     console.log(`WHOIS failed for ${domain}, trying RDAP fallback...`);
+//     try {
+//       const result = await rdap.domain(domain);
+//       if (!result) return {};
+//       const registrar = result.entities?.find((e: any) => e.roles?.includes("registrar"));
+//       const registrant = result.entities?.find((e: any) => e.roles?.includes("registrant"));
+//       const events = result.events || [];
+//       const registrationEvent = events.find((e: any) => e.eventAction === "registration");
+//       const expirationEvent = events.find((e: any) => e.eventAction === "expiration");
+//       const lastChangedEvent = events.find((e: any) => e.eventAction === "last changed");
+//       return {
+//         domainName: result.ldhName,
+//         registrar: registrar?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
+//         creationDate: registrationEvent?.eventDate,
+//         expirationDate: expirationEvent?.eventDate,
+//         updatedDate: lastChangedEvent?.eventDate,
+//         status: result.status?.[0],
+//         nameServer: result.nameservers?.map((ns: any) => ns.ldhName),
+//         registrantName: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
+//         registrantOrganization: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "org")?.[3],
+//       };
+//     } catch (rdapErr) {
+//       console.error("RDAP Lookup Error:", rdapErr);
+//       return {};
+//     }
+//   }
+// }
+
 export async function lookupWhois(domain: string) {
   try {
-    const whoisData = await whois(domain);
-    const rawResponse = JSON.stringify(whoisData).toLowerCase();
-    if (rawResponse.includes("rate limit exceeded") || 
-        rawResponse.includes("retired") || 
-        rawResponse.includes("use our rdap service") ||
-        Object.keys(whoisData).length <= 1) {
-      throw new Error("WHOIS rate limit or empty response");
+    // 2. Whoiser is much more stable on Vercel
+    const whoisData = await whoiser.domain(domain, { follow: 1 });
+    
+    if (!whoisData || Object.keys(whoisData).length === 0) {
+      throw new Error("Empty WHOIS response");
     }
-    return whoisData;
+    
+    // Whoiser returns an object keyed by the server name, 
+    // so we return the first one found or the whole object.
+    return whoisData; 
   } catch (err) {
     console.log(`WHOIS failed for ${domain}, trying RDAP fallback...`);
     try {
       const result = await rdap.domain(domain);
       if (!result) return {};
+      
       const registrar = result.entities?.find((e: any) => e.roles?.includes("registrar"));
       const registrant = result.entities?.find((e: any) => e.roles?.includes("registrant"));
       const events = result.events || [];
-      const registrationEvent = events.find((e: any) => e.eventAction === "registration");
-      const expirationEvent = events.find((e: any) => e.eventAction === "expiration");
-      const lastChangedEvent = events.find((e: any) => e.eventAction === "last changed");
+      
       return {
         domainName: result.ldhName,
         registrar: registrar?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
-        creationDate: registrationEvent?.eventDate,
-        expirationDate: expirationEvent?.eventDate,
-        updatedDate: lastChangedEvent?.eventDate,
+        creationDate: events.find((e: any) => e.eventAction === "registration")?.eventDate,
+        expirationDate: events.find((e: any) => e.eventAction === "expiration")?.eventDate,
+        updatedDate: events.find((e: any) => e.eventAction === "last changed")?.eventDate,
         status: result.status?.[0],
         nameServer: result.nameservers?.map((ns: any) => ns.ldhName),
         registrantName: registrant?.vcardArray?.[1]?.find((a: any) => a[0] === "fn")?.[3],
