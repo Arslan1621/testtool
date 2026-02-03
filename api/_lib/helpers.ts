@@ -60,20 +60,39 @@ const openai = new OpenAI({
 //   }
 // }
 
+// export async function lookupWhois(domain: string) {
+//   try {
+//     // 2. Whoiser is much more stable on Vercel
+//     const whoisData = await whoiser.domain(domain, { follow: 1 });
+    
+//     if (!whoisData || Object.keys(whoisData).length === 0) {
+//       throw new Error("Empty WHOIS response");
+//     }
+    
+//     // Whoiser returns an object keyed by the server name, 
+//     // so we return the first one found or the whole object.
+//     return whoisData; 
+//   } catch (err) {
+//     console.log(`WHOIS failed for ${domain}, trying RDAP fallback...`);
+//     try {
+//       const result = await rdap.domain(domain);
 export async function lookupWhois(domain: string) {
   try {
-    // 2. Whoiser is much more stable on Vercel
-    const whoisData = await whoiser.domain(domain, { follow: 1 });
+    // 1. Call whoiser directly as a function (this is the most compatible way)
+    // 'follow: 1' gets registry data; increase to 2 for registrar details (slower)
+    const whoisData = await whoiser(domain, { follow: 1 });
     
     if (!whoisData || Object.keys(whoisData).length === 0) {
       throw new Error("Empty WHOIS response");
     }
-    
-    // Whoiser returns an object keyed by the server name, 
-    // so we return the first one found or the whole object.
-    return whoisData; 
-  } catch (err) {
-    console.log(`WHOIS failed for ${domain}, trying RDAP fallback...`);
+
+    // 2. Whoiser returns results indexed by the WHOIS server used.
+    // We'll extract the first available result to return a single object.
+    const firstServer = Object.keys(whoisData)[0];
+    return whoisData[firstServer];
+
+  } catch (err: any) {
+    console.log(`WHOIS failed for ${domain}: ${err.message}. Trying RDAP fallback...`);
     try {
       const result = await rdap.domain(domain);
       if (!result) return {};
