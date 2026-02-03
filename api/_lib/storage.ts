@@ -1,7 +1,6 @@
-import { domains, type InsertDomain } from "../../shared/schema";
-import { db } from "./db";
+import { domains, type InsertDomain } from "../../shared/schema.js";
+import { db } from "./db.js";
 import { eq, desc } from "drizzle-orm";
-
 export async function getDomain(domainName: string) {
   const [result] = await db
     .select()
